@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Movies from './pages/Movies';
+import Admin from './pages/Admin';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import EditMovie from './pages/EditMovie';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Movies />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+  path="/admin/edit/:id"
+  element={
+    <ProtectedRoute adminOnly={true}>
+      <EditMovie />
+    </ProtectedRoute>
+  }
+/>
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+
